@@ -18,7 +18,7 @@ Pragma:只有一个no-cache的值
 优先级:Pragma>Cache-Control>Expires
 
 ## http强缓存
-不需要发送请求到服务端，直接读取浏览器本地缓存,是否是强缓存，由Expires、Cache-Control、Pragma决定
+不需要发送请求到服务端，直接读取浏览器本地缓存,强缓存是由Expires、Cache-Control、Pragma决定
 
 ## http协商缓存
 
