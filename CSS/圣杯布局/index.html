@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .header {
+        background-color: aquamarine;
+      }
+      .contain {
+        padding: 0 200px;
+      }
+      .contain::after {
+        display: block;
+        content: '';
+        clear: both;
+      }
+      .contain .left,
+      .middle,
+      .right {
+        float: left;
+      }
+      .contain .left {
+        position: relative;
+        width: 200px;
+        margin-left: -100%;
+        left: -200px;
+        background-color: yellowgreen;
+      }
+      .contain .middle {
+        width: 100%;
+        background-color: blue;
+      }
+      .contain .right {
+        width: 200px;
+        margin-left: -200px;
+        position: relative;
+        background-color: bisque;
+        right: -200px;
+      }
+      .footer {
+        background-color: blanchedalmond;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">header</header>
+    <div class="contain">
+      <div class="middle">middle</div>
+      <div class="left">left</div>
+      <div class="right">right</div>
+    </div>
+    <footer class="footer">footer</footer>
+  </body>
+</html>
