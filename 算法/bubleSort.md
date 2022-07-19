@@ -1,0 +1,20 @@
+##  冒泡排序
+```
+function bubbleSort(sourceArr) {
+  let sum = 0
+  if (Object.prototype.toString.call(arr) !== '[object Array]') return
+  // 只需要数组长度-1次就可以排序完毕，减少循环次数
+  for (let i = 0; i < arr.length - 1; i++) {
+    // -1是因为当j在数组长度-1的索引时候就可以比较完毕，-i是因为排完序后不需要再比较
+    for (let j = 0; j < arr.length - 1 - i; j++) {
+      sum++
+      if (arr[j] > arr[j + 1]) {
+        let temp = arr[j]
+        arr[j] = arr[j + 1]
+        arr[j + 1] = temp
+      }
+    }
+  }
+  return sourceArr
+}
+```
