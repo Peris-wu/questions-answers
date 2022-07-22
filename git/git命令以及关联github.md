@@ -41,6 +41,22 @@ git pull origin master --allow-unrelated-histories
 # 强制提交(覆盖原有分支所有的文件)(慎用)
 git push --force origin master
 
+# 已经提交，未push到远程仓库，代码回滚
+
+git log  //查看历史commit 记录 版本号
+
+git reset --soft 版本号 // 取消版本号之后的commit，版本号之后的变更提交到暂存区
+
+git reset --mixed 版本号  // 取消版本号之后的commit，版本号之后的变更没有提交到暂存区
+
+# 已经提交，已push到远程仓库，代码回滚
+git reset --hard 版本号 撤销版本号之后的提交记录，**慎用**
+
+git revert 版本号 撤销，但是保存了提交记录
+
+reset 是回滚到版本号
+revert 是删除版本号,但有记录,不会影响其他的commit 是个神技,希望两个撤销都不需要用到
+
 # !!!!!!!!!!
 
 ## 配置流程
