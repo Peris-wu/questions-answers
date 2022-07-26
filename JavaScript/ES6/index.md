@@ -139,3 +139,36 @@ Array.prototype.every(()=>{})
 Array.prototype.includes(target)
 // 返回boolean
 ```
+
+# Math
+
+```
+Math.abs() 
+// 绝对值
+
+Math.floor()
+// 向下取整
+
+Math.ceil()
+// 向上取整
+
+Math.random() 
+// 返回一个0<=x<1的随机数
+
+Math.round()
+//返回四舍五入后的整数
+
+Math.max()
+// 返回传入参数的最大值
+
+Math.min()
+// 返回传入参数的最小值
+
+Math.sign()
+// 返回值有1 -1 0 -0 NaN
+// 传入该函数的参数会被隐式转换成数字类型
+
+Math.trunc()
+// 数字的小数部分去掉，只保留整数部分
+```
+
