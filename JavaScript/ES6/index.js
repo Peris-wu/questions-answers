@@ -27,14 +27,21 @@
 //     id: 9
 //   }
 // ]
-let arr = [1, 3, 6, 9, 2, 4]
-let res = arr.filter((item) => {
-  return item > 5
-})
-console.log(arr)
-console.log(res)
+// let arr = [1, 3, 6, 9, 2, 4]
+// let res = arr.filter((item) => {
+//   return item > 5
+// })
+// console.log(arr)
+// console.log(res)
 // let res = arr.findIndex((item, index) => {
 //   console.log(item, index)
 //   return item === 1
 // })
 // console.log(res)
+// let arr = Array.of(5)
+// console.dir(arr)
+let object = {
+  name: 'peris',
+  age: 18
+}
+console.log(Object.entries(object))
