@@ -138,6 +138,9 @@ Array.prototype.every(()=>{})
 
 Array.prototype.includes(target)
 // 返回boolean
+
+Array.prototype.of(element[,element01...])
+// 创建数组
 ```
 
 # Math
@@ -171,4 +174,54 @@ Math.sign()
 Math.trunc()
 // 数字的小数部分去掉，只保留整数部分
 ```
+
+# Number
+
+```
+Number.parseInt()
+// 把一个字符串解析成整数
+Number.parseFloat()
+// 把一个字符串解析成浮点数
+Number.prototype.toFixed(n)
+// 保留n位小数
+Number.isNaN(x)
+// 方法确定传递的值是否为 NaN
+```
+
+# Object 
+
+```
+Object.prototype.getOwnPropertyNames()
+// 返回一个由object自身key值组成的数组
+
+Object.prototype.hasOwnProperty(key)
+// 判断oject自身是有存在key值
+// 返回 true/false
+
+Object.is(val01,val02)
+// 判断val01、val02是否相等
+// 返回true/false
+Object.is(+0,-0) false
++0 === -0 true
+
+Object.keys()
+// 返回一个由object key值组成的数组
+
+Object.values()
+// 返回一个由object value值组成的数组
+
+Object.entries()
+
+let object = {
+  name: 'peris',
+  age: 18
+}
+// 返回一个由key和value组成的二维数组
+// [['name','peris'],['age',18]]
+
+Object.assign(target,source)
+// 合并对象
+// 返回合并后的对象，原对象被修改
+```
+
 
