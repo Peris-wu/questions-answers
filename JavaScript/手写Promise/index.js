@@ -40,28 +40,31 @@ class Commitment {
     }
   }
   then(onFulFulled, onRejected) {
-    return new Commitment((resolve, reject) => {
+    const promise = new Commitment((resolve, reject) => {
       onFulFulled =
-        typeof onFulFulled === 'function' ? onFulFulled : () => this.result
+        typeof onFulFulled === 'function' ? onFulFulled : (result) => result
       onRejected =
-        typeof onRejected === 'function' ? onRejected : () => this.result
+        typeof onRejected === 'function' ? onRejected : (reason) => reason
+      const parse = (promise, r_result, resolve, reject) => {
+        if (promise === r_result) {
+          console.log(123)
+          throw new TypeError('不能返回同一个promise')
+        }
+        try {
+          if (r_result instanceof Commitment) {
+            r_result.then(resolve, reject)
+          } else {
+            resolve(r_result)
+          }
+        } catch (e) {
+          reject(e)
+        }
+      }
       if (this.status === Commitment.PENDING) {
         this.fulfillCallBack.push({
           onFulFulled: () => {
             try {
-              const r_result = onFulFulled(this.result)
-              if (r_result instanceof Commitment) {
-                r_result.then(
-                  (res) => {
-                    resolve(res)
-                  },
-                  (reason) => {
-                    resolve(reason)
-                  }
-                )
-              } else {
-                resolve(r_result)
-              }
+              parse(promise, onFulFulled(this.result), resolve, reject)
             } catch (e) {
               reject(e)
             }
@@ -70,19 +73,7 @@ class Commitment {
         this.rejectCallBack.push({
           onRejected: () => {
             try {
-              const r_result = onRejected(this.result)
-              if (r_result instanceof Commitment) {
-                r_result.then(
-                  (res) => {
-                    resolve(res)
-                  },
-                  (reason) => {
-                    resolve(reason)
-                  }
-                )
-              } else {
-                resolve(r_result)
-              }
+              parse(promise, onRejected(this.result), resolve, reject)
             } catch (e) {
               reject(e)
             }
@@ -91,21 +82,33 @@ class Commitment {
       }
       if (this.status === Commitment.FULFILLED) {
         setTimeout(() => {
+          // parse(promise, onFulFulled(this.result), resolve, reject)
           try {
             const r_result = onFulFulled(this.result)
+            // r_result === promise 这里的测试用例要分清楚，不然的话测不出，
+            /* 
+              let p1 = new Commitment((resolve,reject)=>{
+                  resolve(1)
+              })
+              let p2 = p1.then(res=>{
+                return p2  这里返回的p2 是第二个promise 实例
+              },reason=>{})
+              let p2 = p1.then(res=>{
+                return p2  这里返回的p2 是第三个promise 实例
+              },reason=>{}).then(res=>{},reason=>{
+
+              })
+            */
+            if (r_result === promise) {
+              throw new TypeError('不能返回同一个promise!!!')
+            }
             if (r_result instanceof Commitment) {
-              r_result.then(
-                (res) => {
-                  resolve(res)
-                },
-                (reason) => {
-                  resolve(reason)
-                }
-              )
+              r_result.then(resolve, reject)
             } else {
               resolve(r_result)
             }
           } catch (e) {
+            console.log(e)
             reject(e)
           }
         })
@@ -113,52 +116,25 @@ class Commitment {
       if (this.status === Commitment.REJECTED) {
         setTimeout(() => {
           try {
-            const r_result = onRejected(this.result)
-            if (r_result instanceof Commitment) {
-              r_result.then(
-                (res) => {
-                  resolve(res)
-                },
-                (reason) => {
-                  resolve(reason)
-                }
-              )
-            } else {
-              resolve(r_result)
-            }
+            parse(promise, onRejected(this.result), resolve, reject)
           } catch (e) {
             reject(e)
           }
         })
       }
     })
+    return promise
   }
 }
-let p = new Commitment((resolve, reject) => {
-  reject(66)
+let p2 = new Commitment((resolve, reject) => {
+  resolve(66)
 })
-  .then(
-    (res) => {
-      console.log(res)
-      return new Commitment((resolve01, reject01) => {
-        resolve01(res + 1)
-      })
-    },
-    (reason) => {
-      return new Commitment((resolve01, reject01) => {
-        resolve01(reason + 1)
-      })
-    }
-  )
-  .then(
-    (value) => {
-      console.log(value)
-      return value + 1
-    },
-    (reason) => {
-      console.log(reason)
-      return reason + 3
-    }
-  )
-
-console.log(2)
+let p = p2.then(
+  (res) => {
+    //
+    return p
+  },
+  (reason) => {
+    //
+  }
+)
