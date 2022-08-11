@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body></body>
+  <script>
+    class Commitment {
+      static PENDING = 'PENDING'
+      static FULFILLED = 'FULFILLED'
+      static REJECTED = 'REJECTED'
+      constructor(executor) {
+        try {
+          this.status = Commitment.PENDING
+          this.result = null
+          this.fulfillCallBack = []
+          this.rejectCallBack = []
+          executor(this.resolve, this.reject)
+        } catch (e) {
+          console.log(e)
+        }
+      }
+      resolve = (value) => {
+        if (this.status === Commitment.PENDING) {
+          this.status = Commitment.FULFILLED
+          this.result = value
+          setTimeout(() => {
+            this.fulfillCallBack.length > 0
+              ? this.fulfillCallBack.forEach((cb) => {
+                  cb.onFulFulled(this.result)
+                })
+              : ''
+          })
+        }
+      }
+      reject = (reason) => {
+        if (this.status === Commitment.PENDING) {
+          this.status = Commitment.REJECTED
+          this.result = reason
+          setTimeout(() => {
+            this.rejectCallBack.length > 0
+              ? this.rejectCallBack.forEach((cb) => {
+                  cb.onRejected(this.result)
+                })
+              : ''
+          })
+        }
+      }
+      then(onFulFulled, onRejected) {
+        return new Commitment((resolve, reject) => {
+          onFulFulled =
+            typeof onFulFulled === 'function' ? onFulFulled : () => {}
+          onRejected = typeof onRejected === 'function' ? onRejected : () => {}
+          if (this.status === Commitment.PENDING) {
+            this.fulfillCallBack.push({
+              onFulFulled: () => {
+                try {
+                  resolve(onFulFulled(this.result))
+                } catch (e) {
+                  reject(e)
+                }
+              }
+            })
+            this.rejectCallBack.push({
+              onRejected: () => {
+                try {
+                  resolve(onRejected(this.result))
+                } catch (e) {
+                  reject(e)
+                }
+              }
+            })
+          }
+          if (this.status === Commitment.FULFILLED) {
+            setTimeout(() => {
+              try {
+                resolve(onFulFulled(this.result))
+              } catch (e) {
+                reject(e)
+              }
+            })
+          }
+          if (this.status === Commitment.REJECTED) {
+            setTimeout(() => {
+              try {
+                resolve(onRejected(this.result))
+              } catch (e) {
+                reject(e)
+              }
+            })
+          }
+        })
+      }
+    }
+    let p = new Commitment((resolve, reject) => {
+      reject(66)
+      console.log(1)
+    })
+    p.then(
+      (value) => {
+        console.log(value)
+        return value + 1
+      },
+      (reason) => {
+        console.log(value)
+        return reason + 1
+      }
+    )
+      .then(
+        (value) => {
+          console.log(value)
+          return value + 2
+        },
+        (reason) => {
+          console.log(reason)
+          return 123
+        }
+      )
+      .then((value) => {
+        console.log(value)
+      })
+    console.log(2)
+  </script>
+</html>
