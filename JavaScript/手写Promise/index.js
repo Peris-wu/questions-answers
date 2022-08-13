@@ -212,7 +212,7 @@ class Commitment {
 //   }
 // )
 
-let p1 = new Commitment((resolve, reject) => {
+/* let p1 = new Commitment((resolve, reject) => {
   setTimeout(() => {
     reject('1S')
   }, 1000)
@@ -236,32 +236,48 @@ Commitment.race([]).then(
     console.log('reject')
     console.log(reason)
   }
-)
-/* let p1 = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve('1S')
-  }, 1000)
-})
-let p2 = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve('2S')
-  }, 2000)
-})
-let p3 = new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve('3S')
-  }, 3000)
-})
-Promise.race([]).then(
-  (res) => {
-    console.log('resolve')
-    console.log(res)
-  },
-  (reason) => {
-    console.log('reject')
-    console.log(reason)
-  }
 ) */
+/* let p1 = new Promise((resolve, reject) => {
+  // setTimeout(() => {
+  // }, 1000)
+  resolve('1S')
+}) */
+// let p2 = new Promise((resolve, reject) => {
+//   // setTimeout(() => {
+//   // }, 2000)
+//   reject('2S')
+// })
+// let p3 = new Promise((resolve, reject) => {
+//   // setTimeout(() => {
+//   // }, 3000)
+//   resolve('3S')
+// })
+/* p1.then((res) => {
+  console.log(res)
+  console.log(as)
+  return Promise.reject(2)
+})
+  .then((res) => {
+    //
+    console.log(3)
+    console.log(res)
+  })
+  .then()
+  .catch((err) => {
+    console.log(1)
+    console.log(err)
+    console.log(1)
+  }) */
+// Promise.race([]).then(
+//   (res) => {
+//     console.log('resolve')
+//     console.log(res)
+//   },
+//   (reason) => {
+//     console.log('reject')
+//     console.log(reason)
+//   }
+// )
 // let p1 = Promise.resolve(1)
 // let p2 = Promise.resolve(2)
 // Promise.all([]).then(
@@ -289,3 +305,15 @@ Promise.race([]).then(
 //     console.log(reason)
 //   }
 // )
+
+function setIntervalFn(callback, timer) {
+  let fn = () => {
+    callback()
+    setTimeout(fn, timer)
+  }
+  setTimeout(fn, timer)
+}
+setIntervalFn(like, 1000)
+function like() {
+  console.log('模拟setInterval')
+}
