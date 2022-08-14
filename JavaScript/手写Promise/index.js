@@ -1,3 +1,15 @@
+/* 
+  原Promise：如果上个Promise实例回调没有返回值的话，
+  下一个Promise的实例状态是fulfilled,但是值为undefined
+
+  手写：如果上个Promise实例回调没有返回值的话，
+  下一个Promise的实例状态是fulfilled,但是值为上个Promise实例的值(现已更改)
+
+  catch:在未设置Promise实例的失败回调，
+  期间（发生错误/异常的Promise实例-catch之间的实例均为设置失败回调），
+  则由catch捕获错误/异常
+*/
+
 class Commitment {
   static PENDING = 'PENDING'
   static FULFILLED = 'FULFILLED'
@@ -127,12 +139,18 @@ class Commitment {
       reject(e)
     }
   }
+  catch(failBack) {
+    return this.then(null, failBack)
+  }
   then(onFulFulled, onRejected) {
     const promise = new Commitment((resolve, reject) => {
-      onFulFulled =
-        typeof onFulFulled === 'function' ? onFulFulled : (result) => result
+      onFulFulled = typeof onFulFulled === 'function' ? onFulFulled : () => {}
       onRejected =
-        typeof onRejected === 'function' ? onRejected : (reason) => reason
+        typeof onRejected === 'function'
+          ? onRejected
+          : (reason) => {
+              throw Error(reason)
+            }
       if (this.status === Commitment.PENDING) {
         this.fulfillCallBack.push({
           onFulFulled: () => {
@@ -199,6 +217,16 @@ class Commitment {
     return promise
   }
 }
+let p1 = new Commitment((resolve, reject) => {
+  resolve('resolve')
+})
+p1.then((res) => {
+  console.log(res)
+})
+  .then()
+  .then((res) => {
+    console.log(res)
+  })
 
 // let p1 = Commitment.resolve(1)
 // let p2 = Commitment.reject(2)
@@ -306,14 +334,14 @@ Commitment.race([]).then(
 //   }
 // )
 
-function setIntervalFn(callback, timer) {
-  let fn = () => {
-    callback()
-    setTimeout(fn, timer)
-  }
-  setTimeout(fn, timer)
-}
-setIntervalFn(like, 1000)
-function like() {
-  console.log('模拟setInterval')
-}
+// function setIntervalFn(callback, timer) {
+//   let fn = () => {
+//     callback()
+//     setTimeout(fn, timer)
+//   }
+//   setTimeout(fn, timer)
+// }
+// setIntervalFn(like, 1000)
+// function like() {
+//   console.log('模拟setInterval')
+// }
