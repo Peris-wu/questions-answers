@@ -218,14 +218,15 @@ class Commitment {
   }
 }
 let p1 = new Commitment((resolve, reject) => {
-  resolve('resolve')
+  reject('reject1')
 })
 p1.then((res) => {
   console.log(res)
 })
-  .then()
-  .then((res) => {
-    console.log(res)
+  .then((res) => {})
+  .catch((err) => {
+    console.log(err)
+    console.log(11)
   })
 
 // let p1 = Commitment.resolve(1)
