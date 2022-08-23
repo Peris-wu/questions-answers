@@ -8,10 +8,14 @@ HashRouter // 视图容器 类似vue router-view
 Switch     // 匹配成功，将不会继续匹配
 Route      //
 render     // 可以做路由拦截 类似vue 路由守卫
+           // 通过render渲染的组件props 自身并没有history,需要传递给component
 
 <HashRouter>
   <Switch>
-      <Route path="/home" component="Home" render={()=>{return component}}></Route>
+      <Route path="/home" component="Home"
+      render={(props)=>{return <component {...props}></component>}}
+      ></Route>
+
       <Route path="/news" component=""></Route>
       <Route path="/about" component=""></Route>
   </Switch>
@@ -66,3 +70,7 @@ props.location.match 可以获得id //因为是在url中获取id，所以刷新�
   props.location.query 可以获得id
   props.location.state 可以获得id
 ```
+
+# withRouter
+
+// 当父类组件没有给子组件传递 history 时 也没有使用 useHistory，可以通过 withRouter 给子组件嵌套一层,使得子组件拥有 history 的属性及其功能
