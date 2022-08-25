@@ -40,8 +40,42 @@
 // console.log(res)
 // let arr = Array.of(5)
 // console.dir(arr)
-let object = {
-  name: 'peris',
-  age: 18
+// let object = {
+//   name: 'peris',
+//   age: 18
+// }
+// console.log(Object.entries(object))
+
+// interface Animal {
+//   name: string
+//   type: string
+//   action(): void
+// }
+
+abstract class Animal {
+  protected name: string
+  protected type: string
+  constructor(name: string, type: string) {
+    this.name = name
+    this.type = type
+  }
+  fn() {
+    console.log(this.name)
+  }
+  abstract action(): void
 }
-console.log(Object.entries(object))
+
+class Dog extends Animal {
+  constructor(name: string, type: string) {
+    super(name, type)
+  }
+  action(): void {
+    console.log('狗叫')
+  }
+  fn(): void {
+    console.log(this.name)
+  }
+}
+
+let dog = new Dog('旺财', '哺乳动物')
+console.log(dog.name)

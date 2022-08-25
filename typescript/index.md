@@ -77,4 +77,9 @@ let obj:{
 // [propsName:string]:any  索引签名,当对象中有其他不确定的属性的时候可以使用
 
 // readonly 只读属性 无法修改
+
+// 泛型 (在调用函数式才确定其类型)
+function fn<T>(a:T):T{
+  return a
+}
 ```
