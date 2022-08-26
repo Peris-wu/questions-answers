@@ -82,4 +82,32 @@ let obj:{
 function fn<T>(a:T):T{
   return a
 }
+let res = fn<string>('a')
+
+// 泛型多个泛型参数的函数
+function fn<T,K>(a:T,b:K):T{
+  return a
+}
+let res = fn(1,2)
+
+// 泛型类
+class Animal<T, K> {
+  name: T
+  type: T
+  age: K
+}
+let dog = new Animal<string,number>()
+dog.name = '旺财'
+dog.type = '哺乳动物'
+dog.age = 2
+
+// 泛型约束
+interface ILength {
+  length: number
+}
+
+function getLength<T extends ILength>(a: T) {
+  return a.length
+}
+let res = getLength<string>('123')
 ```
