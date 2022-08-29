@@ -1,4 +1,5 @@
-#  apply手写
+# apply 手写
+
 ```
 // 内置apply
 // window.name = 'windowName'
@@ -26,14 +27,16 @@ Function.prototype.myApply = function (pointObj, args) {
   pointObj = pointObj || window
   // 根据谁调用this指向谁的原则，给传入的对象添加一个属性,它的值就是需要改变this指向的函数
   pointObj.fn = this
-  pointObj.fn(...args)
+  const result = pointObj.fn(...args)
   delete pointObj.fn
+  return result
 }
 fn.myApply(newObj, ['jess01', 20])
 
 ```
 
-# call手写
+# call 手写
+
 ```
 let newObj = {
   name: 'peter',
@@ -56,7 +59,8 @@ fn.myCall(newObj,'jess01', 20)
 // output peter jess01 20
 ```
 
-# 手写bind(该函数返回一个this指向改变后的函数,并且没有执行)
+# 手写 bind(该函数返回一个 this 指向改变后的函数,并且没有执行)
+
 ```
 Function.prototype.myBind = function (newObject, ...args) {
   // 这里使用箭头函数是让this指向需要更改this指向的函数,当然也可以通过通过call和apply修改指向
@@ -65,9 +69,10 @@ Function.prototype.myBind = function (newObject, ...args) {
     newObject = newObject || window
     // 根据谁调用this指向谁的原则，给传入的对象添加一个属性,它的值就是需要改变this指向的函数
     newObject.fn = this
-    newObject.fn(...args, ..._args)
+    const result = newObject.fn(...args, ..._args)
     delete newObject.fn
+    return result
   }
-   
+
 }
 ```
