@@ -52,30 +52,70 @@
 //   action(): void
 // }
 
-abstract class Animal {
-  protected name: string
-  protected type: string
-  constructor(name: string, type: string) {
-    this.name = name
-    this.type = type
-  }
-  fn() {
-    console.log(this.name)
-  }
-  abstract action(): void
-}
+// abstract class Animal {
+//   protected name: string
+//   protected type: string
+//   constructor(name: string, type: string) {
+//     this.name = name
+//     this.type = type
+//   }
+//   fn() {
+//     console.log(this.name)
+//   }
+//   abstract action(): void
+// }
 
-class Dog extends Animal {
-  constructor(name: string, type: string) {
-    super(name, type)
-  }
-  action(): void {
-    console.log('狗叫')
-  }
-  fn(): void {
-    console.log(this.name)
-  }
-}
+// class Dog extends Animal {
+//   constructor(name: string, type: string) {
+//     super(name, type)
+//   }
+//   action(): void {
+//     console.log('狗叫')
+//   }
+//   fn(): void {
+//     console.log(this.name)
+//   }
+// }
 
-let dog = new Dog('旺财', '哺乳动物')
-console.log(dog.name)
+// let dog = new Dog('旺财', '哺乳动物')
+// console.log(dog.name)
+
+// let arr: number[] = [1, 2, 1, 2, 3, 3, 5, 6, 5]
+
+// function calcRepeatNumber(arr: number[]): {} {
+//   return arr.reduce((pre, cur) => {
+//     if (!pre[cur]) {
+//       pre[cur] = 1
+//     } else {
+//       pre[cur] += 1
+//     }
+//     return pre
+//   }, {})
+// }
+// console.log(calcRepeatNumber(arr))
+// 计算年龄，满足大于18的返回年份和年龄
+// function calcAge(arr) {
+//   let currentYear = new Date().getFullYear()
+//   console.log(currentYear)
+//   return arr.reduce((pre, cur) => {
+//     const distanceNum = currentYear - cur
+//     if (distanceNum >= 18) {
+//       pre.push({
+//         cur,
+//         distanceNum
+//       })
+//     }
+//     return pre
+//   }, [])
+// }
+// let arr = [1995, 1997, 1999, 2000]
+// console.log(calcAge(arr))
+
+// script start
+// async1 start
+// promise1
+// script end
+// aync2
+// async1 end
+// promise2
+// setTimeout
