@@ -63,6 +63,7 @@ http {
         }
         # 配置代理（解决跨域）
         location /api {
+            rewrite /api/(.*) /$1 break; #移除了'/api'，$1表示正则中括号匹配到的串
             proxy_pass http://localhost:3000;
         }
         #error_page  404              /404.html;
