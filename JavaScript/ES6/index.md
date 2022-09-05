@@ -69,6 +69,8 @@
 
 11 String.prototype.match()
 
+12 String.prototype.concat()
+
 ```
 
 # Array
