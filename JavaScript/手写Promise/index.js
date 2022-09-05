@@ -218,16 +218,33 @@ class Commitment {
   }
 }
 let p1 = new Commitment((resolve, reject) => {
-  reject('reject1')
+  resolve('resolve')
 })
-p1.then((res) => {
-  console.log(res)
+p1.then(() => {
+  console.log(asd)
 })
-  .then((res) => {})
+  .then(() => {})
   .catch((err) => {
     console.log(err)
-    console.log(11)
   })
+// p1.then((value) => {
+//   console.log(value)
+//   return 666
+// })
+//   .then((value) => {
+//     console.log(value)
+//   })
+//   .then((value) => {
+//     console.log(value)
+//   })
+// p1.then((res) => {
+//   console.log(res)
+// })
+//   .then((res) => {})
+//   .catch((err) => {
+//     console.log(err)
+//     console.log(11)
+//   })
 
 // let p1 = Commitment.resolve(1)
 // let p2 = Commitment.reject(2)

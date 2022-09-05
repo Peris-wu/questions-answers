@@ -8,7 +8,7 @@ function Observer(_data) {
   let dependency = new Dependency()
   Object.keys(_data).forEach((key) => {
     let value = _data[key]
-    this.Observer(_data[key])
+    Observer(_data[key])
     Object.defineProperty(_data, key, {
       enumerable: true,
       configurable: true,
@@ -59,7 +59,6 @@ class Compile {
       const originNodeValue = node.nodeValue
       let result_regexp = pattern.exec(node.nodeValue)
       if (result_regexp) {
-        console.log(node)
         node.nodeValue = node.nodeValue.replace(pattern, (_, key) => {
           const keyArr = key.split('.')
           new Watcher(this.$vm, keyArr, (newValue) => {
