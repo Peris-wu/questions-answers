@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script>
+  class Commitment {
+    static Pedding = 'Pedding'
+    static Fulfill = 'Fulfill'
+    static Reject = 'Reject'
+    constructor(exector) {
+      try {
+        this.result
+        this.status = Commitment.Pedding
+        this.callback = []
+        exector(this.resolve, this.reject)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    static resolve = (value) => {
+      return new Commitment((resolve, reject) => {
+        if (value instanceof Commitment) {
+          value.then((res) => {
+            resolve(res)
+          }, (reason) => {
+            reject(reason)
+          })
+        } else {
+          resolve(value)
+        }
+      })
+    }
+    static reject = (reason) => {
+      return new Commitment((resolve, reject) => {
+        if (reason instanceof Commitment) {
+          reason.then(null, (_reason) => {
+            reject(_reason)
+          })
+        } else {
+          reject(reason)
+        }
+      })
+    }
+    all = (promises) => {
+      return new Commitment((resolve, reject) => {
+        if (!promises) {
+          resolve([])
+          return
+        }
+        let count = 0
+        let _resolveArr = []
+        promises.forEach(p => {
+          Commitment.resolve(p).then(
+            (value) => {
+              _resolveArr.push(value)
+              count++
+              if (count === promises.length) {
+                resolve(_resolveArr)
+              }
+            },
+            (reason) => {
+              reject(reason)
+            })
+        })
+      })
+    }
+    resolve = (value) => {
+      if (this.status === Commitment.Pedding) {
+        this.status = Commitment.Fulfill
+        this.result = value
+        this.callback.length > 0
+          ? this.callback.forEach((cb) => {
+            setTimeout(() => {
+              cb.resolve(this.result)
+            })
+          })
+          : ''
+      }
+    }
+    reject = (reason) => {
+      if (this.status === Commitment.Pedding) {
+        this.status = Commitment.Reject
+        this.result = reason
+        this.callback.length > 0
+          ? this.callback.forEach((cb) => {
+            setTimeout(() => {
+              cb.reject(this.result)
+            })
+          })
+          : ''
+      }
+    }
+    catch = (cb) => {
+      return this.then(null, cb)
+    }
+    then = (onFulfill, onReject) => {
+      return new Commitment((resolve, reject) => {
+        onFulfill = typeof onFulfill === 'function' ? onFulfill : () => { }
+        onReject = typeof onReject === 'function' ? onReject : () => {
+          throw new Error(this.result)
+        }
+        if (this.status === Commitment.Pedding) {
+          this.callback.push({
+            resolve: (value) => {
+              try {
+                const result = onFulfill(value)
+                if (result instanceof Commitment) {
+                  result.then((value) => {
+                    resolve(value)
+                  })
+                } else {
+                  resolve(result)
+                }
+              } catch (e) {
+                reject(e)
+              }
+            },
+            reject: (reason) => {
+              try {
+                const result = onReject(reason)
+                if (result instanceof Commitment) {
+                  result.then(null, (reason) => {
+                    resolve(reason)
+                  })
+                } else {
+                  resolve(result)
+                }
+              } catch (e) {
+                reject(e)
+              }
+            }
+          })
+        }
+        if (this.status === Commitment.Fulfill) {
+          setTimeout(() => {
+            try {
+              const result = onFulfill(this.result)
+              resolve(result)
+            } catch (e) {
+              reject(e)
+            }
+          })
+        }
+        if (this.status === Commitment.Reject) {
+          setTimeout(() => {
+            try {
+              const result = onReject(this.result)
+              resolve(result)
+            } catch (e) {
+              reject(e)
+            }
+          })
+        }
+      })
+    }
+  }
+  // let p = Commitment.reject('fail')
+  // p.then(null, (rea) => {
+  //   console.log(rea)
+  // })
+  // console.log(p);
+
+  let p = new Commitment((resolve, reject) => {
+    reject('fail')
+  })
+  let res = Promise.all([p])
+
+  res.then((val) => {
+    console.log(1)
+    console.log(val)
+  }, (rea) => {
+    console.log(2)
+    console.log(rea)
+  }
+  )
+
+
+  /*   let p = new Commitment((resolve, reject) => {
+      setTimeout(() => {
+        resolve('success')
+        console.log(1)
+      }, 2000)
+    })
+    console.log(2)
+    p.then((value) => {
+      console.log(value)
+    }).then()
+      .then(() => {
+        console.log(123)
+      }).catch((err) => {
+        console.log(err)
+      }) */
+</script>
+
+</html>
