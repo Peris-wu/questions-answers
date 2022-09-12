@@ -24,3 +24,30 @@ console.log(xm.age) // 12
 xm.eat() // xiaoming is eating
 
 ```
+
+```
+es6:
+
+class Parent {
+  constructor(name) {
+    this.name = name
+  }
+  eat() {
+    console.log(this.name + ' is eating')
+  }
+}
+
+class Child extends Parent {
+  constructor(name, age) {
+    super(name)
+    this.age = age
+  }
+}
+
+// 测试
+let xm = new Child('xiaoming', 12)
+console.log(xm.name) // xiaoming
+console.log(xm.age) // 12
+xm.eat() // xiaoming is eating
+
+```
